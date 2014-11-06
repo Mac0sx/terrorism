@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Terrorism - Datavisualisation</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/legenda.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300' rel='stylesheet' type='text/css'>
+<script>
+$(document).ready(function(){
+  $("#information").click(function(){
+    $("#legenda").toggle(100);
+  });
+});
+</script>
+
+</head>
+<body>
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.3/Leaflet.fullscreen.min.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.3/leaflet.fullscreen.css' rel='stylesheet' />
+
+<div id='map'></div>
+
+<img id='information' src='img/information.png'/>
+    <div id='legenda'>
+        <div class='legend-title'>Terrorist attacks over the years</div>
+            <div class='legend-scale'>
+                <ul class='legend-labels'>
+                    <li><span style='background:#d92614;'></span>1970 - 1980</li>
+                    <li><span style='background:#fe5b2c;'></span>1980 - 1990</li>
+                    <li><span style='background:#ff9f49;'></span>1990 - 2000</li>
+                    <li><span style='background:#ffd97a;'></span>2000 - 2010</li>
+                    <li><span style='background:#ffffb0;'></span>2010 - 2013</li>
+                </ul>
+            </div>
+                <div class='legend-source'>Source: <a href="http://www.start.umd.edu/gtd/" target="_blank">Global Terrorism Database (GTD)</a></div>
+            </div>  
+      </div>
+  </div>
+
+<div id='timeline'>
+	<ul id='map-ui'></ul>
+</div>
+<script>
+
+L.mapbox.accessToken = 'pk.eyJ1Ijoic2hnem9uIiwiYSI6IlFKQ3VlWlUifQ.Rsuako0WQAb7n3O2yhK6Sw';
+var map = L.mapbox.map('map', 'shgzon.q1xde7b9',{ 			
+      minZoom: 3,
+      maxZoom: 8,
+      zIndex: 1,
+      infoControl: true
+
+  }).setView([42.101671, 14.732572], 3);
+  L.control.fullscreen().addTo(map);
+
+
+var layers = document.getElementById('timeline');
+
+map.gridControl.options.follow = true;
+var ui = document.getElementById('map-ui');
+addLayer(L.mapbox.tileLayer('shgzon.fp8n0zfr'), '1970-1980', 1);
+var gridlayer1 = L.mapbox.gridLayer('shgzon.fp8n0zfr').addTo(map);
+map.addControl(L.mapbox.gridControl(gridlayer1));
+
+addLayer(L.mapbox.tileLayer('shgzon.at027qfr'), '1980-1990', 6);
+var gridlayer1 = L.mapbox.gridLayer('shgzon.at027qfr').addTo(map);
+map.addControl(L.mapbox.gridControl(gridlayer1));
+
+addLayer(L.mapbox.tileLayer('shgzon.0fzxs9k9'), '1990-2000', 5);
+var gridlayer1 = L.mapbox.gridLayer('shgzon.0fzxs9k9').addTo(map);
+map.addControl(L.mapbox.gridControl(gridlayer1));
+
+addLayer(L.mapbox.tileLayer('shgzon.9860qkt9'), '2000-2010', 4)
+var gridlayer1 = L.mapbox.gridLayer('shgzon.9860qkt9').addTo(map);
+map.addControl(L.mapbox.gridControl(gridlayer1));
+
+addLayer(L.mapbox.tileLayer('shgzon.fx3zbyb9'), '2010-2013', 3)
+var gridlayer1 = L.mapbox.gridLayer('shgzon.fx3zbyb9').addTo(map);
+map.addControl(L.mapbox.gridControl(gridlayer1));
+
+L.control.fullscreen()
+function addLayer(layer, name, zIndex, maxZoom) {
+    layer
+        .setZIndex(zIndex)
+        .addTo(map);
+    // Create a simple layer switcher that toggles layers on
+    // and off.
+    var item = document.createElement('li');
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active';
+    link.innerHTML = name;
+    link.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (map.hasLayer(layer)) {
+            map.removeLayer(layer);
+            this.className = '';
+        } else {
+            map.addLayer(layer);
+            this.className = 'active';
+        }
+    };
+    item.appendChild(link);
+    ui.appendChild(item);
+}
+
+
+</script>
+</body>
+</html>
